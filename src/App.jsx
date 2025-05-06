@@ -4,16 +4,17 @@ import ParkingStatus from "./components/ParkingStatus";
 import HeatMapView from "./components/HeatMapView";
 import HistoryChart from "./components/HistoryChart";
 import Booking from "./components/Bookings";
-import Services from "./components/Service";
-import Payments from "./components/Payment";
+import Services from "./components/Services";
+import Payments from "./components/Payments";
 
 const App = () => {
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
 
   return (
     <div className="flex h-screen font-sans">
-      {/* Sidebar Toggle */}
+      {/* Sidebar Toggle Button */}
       <button
         className="absolute top-4 left-4 z-50 text-2xl text-gray-700 focus:outline-none"
         onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -23,8 +24,7 @@ const App = () => {
 
       {/* Sidebar */}
       {sidebarOpen && (
-        <aside className="w-60 bg-cyan-300 border-r p-4 shadow">
-          <h2 className="text-2xl font-bold mb-6 text-blue-600">🚗 SPOT Parking System</h2>
+        <aside className="w-60 bg-cyan-300 border-r p-4 shadow py-15">
           <nav className="space-y-4">
             <button onClick={() => navigate("/")} className="block text-left text-gray-700 hover:text-blue-600">Dashboard</button>
             <button onClick={() => navigate("/booking")} className="block text-left text-gray-700 hover:text-blue-600">Booking</button>
@@ -35,15 +35,22 @@ const App = () => {
       )}
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col bg-gray-50">
-        {/* Top bar */}
-        <header className="p-4 bg-white border-b shadow-sm">
+      <div className="flex-1 flex flex-col bg-gray-50 relative">
+        {/* Header: Title */}
+        <div className="flex items-center justify-center p-4 bg-amber-200 border-b shadow">
+          <h2 className="text-2xl font-bold text-blue-600">🚗 SPOT Parking System</h2>
+        </div>
+
+        {/* Search Bar */}
+        {/* <header className="p-4 bg-white border-b shadow-sm">
           <input
             type="text"
             placeholder="Search registration number or booking name"
             className="w-full p-2 border rounded"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
           />
-        </header>
+        </header> */}
 
         {/* Route Content */}
         <main className="flex flex-1 overflow-hidden">
@@ -58,7 +65,6 @@ const App = () => {
                 </div>
               </section>
             } />
-
             <Route path="/booking" element={<Booking />} />
             <Route path="/services" element={<Services />} />
             <Route path="/payments" element={<Payments />} />

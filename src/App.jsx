@@ -1,22 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import ParkingStatus from "./components/ParkingStatus";
 import HeatMapView from "./components/HeatMapView";
 import HistoryChart from "./components/HistoryChart";
+import Booking from "./components/Bookings";
+import Services from "./components/Service";
+import Payments from "./components/Payment";
 
 const App = () => {
+  const navigate = useNavigate();
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+
   return (
     <div className="flex h-screen font-sans">
+      {/* Sidebar Toggle */}
+      <button
+        className="absolute top-4 left-4 z-50 text-2xl text-gray-700 focus:outline-none"
+        onClick={() => setSidebarOpen(!sidebarOpen)}
+      >
+        ☰
+      </button>
+
       {/* Sidebar */}
-      <aside className="w-60 bg-cyan-300 border-r p-4 shadow">
-        <h2 className="text-2xl font-bold mb-6 text-blue-600">🚗 SPOT Parking System</h2>
-        <nav className="space-y-4">
-          <button className="block text-left text-gray-700 hover:text-blue-600">Dashboard</button>
-          <button className="block text-left text-gray-700 hover:text-blue-600">Booking</button>
-          <button className="block text-left text-gray-700 hover:text-blue-600">Services</button>
-          <button className="block text-left text-gray-700 hover:text-blue-600">Overview</button>
-          <button className="block text-left text-gray-700 hover:text-blue-600">Payments</button>
-        </nav>
-      </aside>
+      {sidebarOpen && (
+        <aside className="w-60 bg-cyan-300 border-r p-4 shadow">
+          <h2 className="text-2xl font-bold mb-6 text-blue-600">🚗 SPOT Parking System</h2>
+          <nav className="space-y-4">
+            <button onClick={() => navigate("/")} className="block text-left text-gray-700 hover:text-blue-600">Dashboard</button>
+            <button onClick={() => navigate("/booking")} className="block text-left text-gray-700 hover:text-blue-600">Booking</button>
+            <button onClick={() => navigate("/services")} className="block text-left text-gray-700 hover:text-blue-600">Services</button>
+            <button onClick={() => navigate("/payments")} className="block text-left text-gray-700 hover:text-blue-600">Payments</button>
+          </nav>
+        </aside>
+      )}
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col bg-gray-50">
@@ -29,17 +45,24 @@ const App = () => {
           />
         </header>
 
-        {/* Content Grid */}
+        {/* Route Content */}
         <main className="flex flex-1 overflow-hidden">
-          {/* Parking Grid Area */}
-          <section className="flex-1 p-4 overflow-auto">
-            <h1 className="text-xl font-semibold mb-4">Parking Space Overview</h1>
-            <div className="bg-cyan-200 p-4 rounded shadow">
-              <ParkingStatus />
-              <HeatMapView />
-              <HistoryChart />
-            </div>
-          </section>
+          <Routes>
+            <Route path="/" element={
+              <section className="flex-1 p-4 overflow-auto">
+                <h1 className="text-xl font-semibold mb-4">Parking Space Overview</h1>
+                <div className="bg-cyan-200 p-4 rounded shadow">
+                  <ParkingStatus />
+                  <HeatMapView />
+                  <HistoryChart />
+                </div>
+              </section>
+            } />
+
+            <Route path="/booking" element={<Booking />} />
+            <Route path="/services" element={<Services />} />
+            <Route path="/payments" element={<Payments />} />
+          </Routes>
 
           {/* Detail Panel */}
           <aside className="w-80 border-l bg-cyan-200 p-4 shadow">
